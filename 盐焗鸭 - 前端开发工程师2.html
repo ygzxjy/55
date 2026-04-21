@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>盐焗鸭 - 前端开发工程师</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffc0cb 50%, #ffb6c1 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .header .title { font-size: 1.2rem; opacity: 0.9; letter-spacing: 4px; }
+
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content { padding: 50px; }
+
+        .section { margin-bottom: 40px; }
+        .section:last-child { margin-bottom: 0; }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            border-left: 4px solid #ff69b4;
+            padding-left: 15px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .info-section { display: flex; gap: 30px; }
+        .info-left { flex: 1; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: #fff0f5;
+            border-radius: 8px;
+        }
+
+        .info-label { color: #7f8c8d; margin-right: 10px; min-width: 50px; font-size: 0.9rem; }
+        .info-value { color: #2c3e50; font-weight: 500; font-size: 0.95rem; }
+
+        .info-right {
+            width: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 照片上传区域 */
+        .photo-box {
+            width: 120px;
+            height: 150px;
+            border: 2px dashed #ff69b4;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fff0f5;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .photo-box:hover {
+            border-color: #ff1493;
+            background: #ffe4f0;
+        }
+
+        .photo-box .icon {
+            font-size: 2rem;
+            color: #ff69b4;
+            margin-bottom: 8px;
+        }
+
+        .photo-box .text {
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+        }
+
+        .photo-box input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .photo-box.has-photo {
+            border-style: solid;
+        }
+
+        .photo-box.has-photo .icon,
+        .photo-box.has-photo .text {
+            display: none;
+        }
+
+        .photo-box.has-photo .photo-preview {
+            display: block;
+        }
+
+        .photo-label { color: #7f8c8d; font-size: 0.85rem; margin-top: 8px; }
+
+        .education-item {
+            padding: 22px;
+            background: #fff0f5;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            border-left: 3px solid #ff69b4;
+        }
+
+        .education-item:last-child { margin-bottom: 0; }
+
+        .education-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .education-row:last-child { margin-bottom: 0; }
+
+        .edu-field { display: flex; flex-direction: column; }
+        .edu-field label { font-size: 0.8rem; color: #95a5a6; margin-bottom: 4px; }
+        .edu-field .value { color: #2c3e50; font-weight: 500; font-size: 0.95rem; }
+        .edu-desc { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #ffb6c1; color: #7f8c8d; font-size: 0.9rem; }
+
+        .skills-container { display: flex; flex-wrap: wrap; gap: 14px; }
+
+        .skill-tag {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .project-item {
+            padding: 22px;
+            background: #fff0f5;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .project-item:last-child { margin-bottom: 0; }
+        .project-name { font-size: 1.1rem; color: #2c3e50; font-weight: 600; margin-bottom: 10px; }
+        .project-desc { color: #666; line-height: 1.6; font-size: 0.95rem; }
+
+        .self-evaluation {
+            padding: 22px;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 100%);
+            border-radius: 10px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* 使用说明 */
+        .tips {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border: 1px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            color: #b8860b;
+            margin-bottom: 8px;
+        }
+
+        .tips-content {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+            .info-section { flex-direction: column; }
+            .info-right { width: 100%; flex-direction: row; justify-content: flex-start; gap: 15px; }
+            .photo-box { width: 100px; height: 125px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .education-row { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.8rem; }
+            .content { padding: 25px; }
+        }
+        .img {
+            width: 100%;height: 100%;
+        }
+    </style>
+</head>
+<body class="bianju">
+    <div class="container">
+        <div class="header">
+            <h1>陈慈乐</h1>
+            <p class="title">顺大在读高材生</p>
+            <div class="contact-row">
+                <div class="contact-item"><span>📱</span><span>198*******</span></div>
+                <div class="contact-item"><span>📧</span><span>*********</span></div>
+            </div>
+        </div>
+
+        
+
+            <!-- 基本信息 -->
+            <div class="section">
+                <h2 class="section-title">基本信息</h2>
+                <div class="info-section">
+                    <div class="info-left">
+                        <div class="info-grid">
+                            <div class="info-item"><span class="info-label">姓名</span><span class="info-value">陈慈乐</span></div>
+                            <div class="info-item"><span class="info-label">性别</span><span class="info-value">男</span></div>
+                            <div class="info-item"><span class="info-label">年龄</span><span class="info-value">19</span></div>
+                            <div class="info-item"><span class="info-label">手机</span><span class="info-value">198********</span></div>
+                            <div class="info-item"><span class="info-label">学历</span><span class="info-value">大专在读</span></div>
+                            <div class="info-item"><span class="info-label">专业</span><span class="info-value">软件技术</span></div>
+                        </div>
+                    </div>
+                    <div class="info-right">
+                        <!-- <label class="photo-box" id="photoBox">
+                            <input type="file" accept="image/*" id="photoInput" onchange="handlePhotoUpload(this)">
+                            <span class="icon">📷</span>
+                            <span class="text">点击上传<br>证件照</span>
+                            <img class="photo-preview" id="photoPreview" alt="证件照预览">
+                        </label> -->
+                        <img class="img" src="./微信图片_20260420135457_10259_19.jpg" alt="">
+                        <span class="photo-label">证件照</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">教育背景</h2>
+                <div class="education-item">
+                    <div class="education-row">
+                        <div>
+                            <div class="edu-field"><label>学校名称</label><span class="value">雷州市第三中学</span></div>
+                            <div class="edu-field"><label>时间段</label><span class="value">2019-2022</span></div>
+                        </div>
+                        <div>
+                            <div class="edu-field"><label>学校名称</label><span class="value">雷州市职业高级中学</span></div>
+                            <div class="edu-field"><label>时间段</label><span class="value">2022-2025</span></div>
+                        </div>
+                        <div>
+                            <div class="edu-field"><label>学校名称</label><span class="value">顺德职业技术大学</span></div>
+                            <div class="edu-field"><label>时间段</label><span class="value">2025-2027</span></div>
+                        </div>
+                        
+                        <div class="edu-field"><label>学历</label><span class="value">大专</span></div>
+                    </div>
+                    <div class="education-row">
+                        <div class="edu-field"><label>专业</label><span class="value">软件技术</span></div>
+                        <div class="edu-field"><label>学位</label><span class="value">无</span></div>
+                        <div class="edu-field"><label>GPA</label><span class="value">待补充</span></div>
+                    </div>
+                    <div class="edu-desc">补充说明（如担任职务、获奖情况等）</div>
+                </div>
+               
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">专业技能</h2>
+                <div class="skills-container">
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">Python</span>
+                    
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">项目经历</h2>
+                <div class="project-item">
+                    <div class="project-name">项目名称</div>
+                    <div class="project-desc">叽里呱啦说啥呢</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-name">项目名称</div>
+                    <div class="project-desc">叽里咕噜说啥呢</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">自我评价</h2>
+                <div class="self-evaluation">你猜我要说什么</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handlePhotoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoBox = document.getElementById('photoBox');
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    photoBox.classList.add('has-photo');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
